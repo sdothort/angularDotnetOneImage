@@ -59,7 +59,6 @@
       }
     }
   },
-  "defaultProject": "clientapp",
   "cli": {
     "analytics": false
   }
