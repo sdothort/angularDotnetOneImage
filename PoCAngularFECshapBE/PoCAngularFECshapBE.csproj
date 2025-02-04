@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <!-- When publishing, run the Angular build and copy its output to wwwroot -->
-    <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <Target  Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish" Condition="false">
         <!-- Install Angular dependencies -->
         <Exec Command="npm install" WorkingDirectory="ClientApp" />
         <!-- Build Angular for production (Angular CLI now uses the production configuration flag) -->
