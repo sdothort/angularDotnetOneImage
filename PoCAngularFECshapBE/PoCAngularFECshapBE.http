@@ -1,0 +1,6 @@
+@PoCAngularFECshapBE_HostAddress = http://localhost:5262
+
+GET {{PoCAngularFECshapBE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

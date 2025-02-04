@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.12"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <!-- When publishing, run the Angular build and copy its output to wwwroot -->
+    <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+        <!-- Install Angular dependencies -->
+        <Exec Command="npm install" WorkingDirectory="ClientApp" />
+        <!-- Build Angular for production (Angular CLI now uses the production configuration flag) -->
+        <Exec Command="npm run build -- --configuration production" WorkingDirectory="ClientApp" />
+        <!-- Include the generated files from ClientApp/dist into wwwroot -->
+        <ItemGroup>
+            <DistFiles Include="ClientApp/dist/**/*.*" />
+            <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')"
+                                   RelativePath="wwwroot/%(DistFiles.Identity)" />
+        </ItemGroup>
+    </Target>
+    
+</Project>
