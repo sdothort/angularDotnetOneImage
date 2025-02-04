@@ -18,17 +18,21 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\" />
+    </ItemGroup>
+
     <!-- When publishing, run the Angular build and copy its output to wwwroot -->
     <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
         <!-- Install Angular dependencies -->
         <Exec Command="npm install" WorkingDirectory="ClientApp" />
         <!-- Build Angular for production (Angular CLI now uses the production configuration flag) -->
-        <Exec Command="npm run build -- --configuration production" WorkingDirectory="ClientApp" />
+        <Exec Command="ng build" WorkingDirectory="ClientApp" />
         <!-- Include the generated files from ClientApp/dist into wwwroot -->
         <ItemGroup>
-            <DistFiles Include="ClientApp/dist/**/*.*" />
-            <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')"
-                                   RelativePath="wwwroot/%(DistFiles.Identity)" />
+            <DistFiles Include="ClientApp/dist/browser/*.*" />
+            <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')"                                   
+                                   RelativePath="wwwroot/%(RecursiveDir)%(Filename)%(Extension)" /> 
         </ItemGroup>
     </Target>
     

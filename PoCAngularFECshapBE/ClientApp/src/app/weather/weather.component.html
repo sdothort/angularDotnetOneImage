@@ -1,0 +1,9 @@
+<p>weather works!</p>
+
+<button (click)="fetchData()">Call Backend Service</button>
+
+<!-- Optionally, display the fetched data -->
+<div *ngIf="data">
+    <h3>Data from Backend:</h3>
+    <pre>{{ data | json }}</pre>
+</div>
