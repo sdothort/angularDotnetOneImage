@@ -50,4 +50,9 @@ jobs:
           docker build -t ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/pocangulardotnetoneimage:${{ github.sha }} .
           docker push ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/pocangulardotnetoneimage:${{ github.sha }}        
 
-
+      - name: Deploy latest image
+        run: |
+          az containerapp update \
+            --name ${{ env.POCANGULARDOTNETONEIMAGE_CONTAINER_APP }} \
+            --resource-group ${{ env.POCANGULARDOTNETONEIMAGE_RG }} \
+            --image ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/pocangulardotnetoneimage:${{ github.sha }}
