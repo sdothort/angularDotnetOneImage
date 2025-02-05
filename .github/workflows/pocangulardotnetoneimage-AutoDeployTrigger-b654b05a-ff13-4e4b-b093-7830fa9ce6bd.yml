@@ -1,0 +1,52 @@
+name: Trigger auto deployment for boardgameapi
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/pocangulardotnetoneimage-AutoDeployTrigger-b654b05a-ff13-4e4b-b093-7830fa9ce6bd.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.POCANGULARDOTNETONEIMAGE_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.POCANGULARDOTNETONEIMAGE_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.POCANGULARDOTNETONEIMAGE_AZURE_SUBSCRIPTION_ID }}
+      
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}
+          username: ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_USERNAME }}
+          password: ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_PASSWORD }}
+
+      - name: Log in to Azure Container Registry via Docker
+        run: |
+          docker login ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }} \
+            -u ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_USERNAME }} \
+            -p ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_PASSWORD }} 
+
+      - name: Build and push container image
+        run: |
+          docker build -t ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/boardgameapi:${{ github.sha }} .
+          docker push ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/boardgameapi:${{ github.sha }}        
+
+
