@@ -44,16 +44,18 @@ app.MapFallbackToFile("index.html");
 // A simple GET endpoint returning a JSON response.
 app.MapGet("/api/weather", () =>
 {
-    return Results.Json(new JsonObject(){
-            { "location", "hannover" },
-            {"temperature", Random.Shared.Next(-20, 55)},
-            {"humidity", Random.Shared.Next(-20, 55)},
-            {"pressure", Random.Shared.Next(-20, 55)},
-            {"wind", Random.Shared.Next(-20, 55)},
-            {"windspeed", Random.Shared.Next(-20, 55)},
-            {"winddirection", "nw"},
-        })
-    ;
+    var winddirections = new[] { "n", "ne", "e", "se", "s", "sw", "w", "nw" };
+    var cities = new[] { "hannover", "berlin", "köln", "bonn", "eisenach", "dresden", "saarbrücken", "münchen", "hamburg", "flensburg", "stuttgart" };
+    return Results.Json(new JsonObject()
+    {
+        { "location", cities[Random.Shared.Next(0, cities.Length)] },
+        { "temperature", Random.Shared.Next(-20, 55) },
+        { "humidity", Random.Shared.Next(-20, 55) },
+        { "pressure", Random.Shared.Next(-20, 55) },
+        { "wind", Random.Shared.Next(-20, 55) },
+        { "windspeed", Random.Shared.Next(-20, 55) },
+        { "winddirection", winddirections[Random.Shared.Next(0, winddirections.Length)] },
+    });
 });
 
 app.Run();
