@@ -53,6 +53,6 @@ jobs:
       - name: Deploy latest image
         run: |
           az containerapp update \
-            --name ${{ env.POCANGULARDOTNETONEIMAGE_CONTAINER_APP }} \
-            --resource-group ${{ env.POCANGULARDOTNETONEIMAGE_RG }} \
+            --name ${{ vars.POCANGULARDOTNETONEIMAGE_CONTAINER_APP }} \
+            --resource-group ${{ vars.POCANGULARDOTNETONEIMAGE_RG }} \
             --image ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/pocangulardotnetoneimage:${{ github.sha }}
