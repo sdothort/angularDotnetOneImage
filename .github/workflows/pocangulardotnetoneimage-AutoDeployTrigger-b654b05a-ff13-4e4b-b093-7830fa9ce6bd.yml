@@ -46,7 +46,8 @@ jobs:
 
       - name: Build and push container image
         run: |
-          docker build -t ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/boardgameapi:${{ github.sha }} .
-          docker push ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/boardgameapi:${{ github.sha }}        
+          cd PoCAngularFECshapBE
+          docker build -t ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/pocangulardotnetoneimage:${{ github.sha }} .
+          docker push ${{ secrets.POCANGULARDOTNETONEIMAGE_REGISTRY_URL }}/pocangulardotnetoneimage:${{ github.sha }}        
 
 
